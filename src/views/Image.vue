@@ -46,6 +46,7 @@
   >
  
  <!-- 现在是el-upload组件上传，而不是axios，所以要写全地址 
+ 结果是res。data。url
  name默认是file，但是后台名称是image，所以改成image
  401是认证问题，所以要在请求头携带token-->
  <el-upload

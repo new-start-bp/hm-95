@@ -7,6 +7,9 @@ import artical from '../views/Artical.vue'
 import notfund from '../views/404.vue'
 import Image from '../views/Image.vue'
 import publish from '../views/Publish.vue'
+import Comment from '../views/Comment.vue'
+import fans from '../views/Fans.vue'
+import setting from '../views/Setting.vue'
 import auth from '@/utils/auth'
 Vue.use(VueRouter)
 const routes=[{path:'/login',component:login},
@@ -19,6 +22,9 @@ children:[{
 },
 { path: '/image', component: Image },
 { path: '/publish', component: publish },
+{ path: '/comment', component: Comment },
+{ path: '/fans', component: fans },
+{ path: '/setting', component: setting },
 
 ]
 },{

@@ -35,15 +35,15 @@ default-active="/" 原来默认激活首页，就算点击内容，还是激活�
           <i class="el-icon-s-promotion"></i>
           <span slot="title">发布文章</span>
         </el-menu-item>
-        <el-menu-item index="5">
+        <el-menu-item index="/comment">
           <i class="el-icon-chat-dot-round"></i>
           <span slot="title">评论管理</span>
         </el-menu-item>
-        <el-menu-item index="6">
+        <el-menu-item index="/fans">
           <i class="el-icon-present"></i>
           <span slot="title">粉丝管理</span>
         </el-menu-item>
-        <el-menu-item index="7">
+        <el-menu-item index="/setting">
           <i class="el-icon-setting"></i>
           <span slot="title">个人设置</span>
         </el-menu-item>

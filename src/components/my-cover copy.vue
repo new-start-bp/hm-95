@@ -2,10 +2,8 @@
   <div class="my-cover">
     <!-- 图片按钮 -->
     <div class="btn_img" @click="openDialog()">
-      <!-- webpack只会打包静态依赖的本地资源，例如静态src，style里面的背景图，import的 -->
-      <!-- <img src="../assets/default.png" /> -->
-      <!-- 下面动态绑定之后，这个默认图片就不显示了 -->
-      <img  :src="value || coverImageUrl"/>
+      <!-- 保证父组件传入图片地址没有的话，显示默认图 -->
+      <img :src="value || coverImageUrl" />
     </div>
     <!-- 对话框 -->
     <el-dialog :visible.sync="dialogVisible" width="720px">
@@ -19,16 +17,12 @@
           </el-radio-group>
           <!-- 素材列表 -->
           <div class="img_list">
-            <!-- 当item.url和选中的是同一个的时候，加上这个selected类 
-            {类名：true（或false），意思就是item.url === selectedImageUrl条件为真
-            的时候，加上这个类}-->
-            <!-- click的时候，把选的图片放到selectedImageUrl -->
-            <div 
-            :class="{selected: item.url === selectedImageUrl}"
-            @click="selectedImage(item.url)"
-            class="img_item" 
-            v-for="item in images" 
-            :key="item.id">
+            <div
+              :class="{selected: item.url === selectedImageUrl}"
+              @click="selectedImage(item.url)"
+              class="img_item"
+              v-for="item in images"
+              :key="item.id">
               <img :src="item.url">
             </div>
           </div>
@@ -36,15 +30,15 @@
           <el-pagination
             background
             layout="prev, pager, next"
-            :total="total"
-             hide-on-single-page
+            hide-on-single-page
             @current-change="changePager"
             :page-size="reqParams.per_page"
             :current-page="reqParams.page"
-            >
+            :total="total">
           </el-pagination>
         </el-tab-pane>
         <el-tab-pane label="上传图片" name="upload">
+          <!-- 上传组件 -->
           <el-upload
             class="avatar-uploader"
             action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
@@ -70,6 +64,7 @@ import auth from '@/utils/auth'
 import defaultImg from '@/assets/default.png'
 export default {
   name: 'my-cover',
+  // 父传子，图片地址
   props: ['value'],
   data () {
     return {
@@ -82,25 +77,27 @@ export default {
         // 列表类型（全部，收藏）
         collect: false,
         page: 1,
-        per_page: 8,
-       
+        per_page: 8
       },
-       total:0,
-        images:[],
-        selectedImageUrl: null,
-        //上传请求头
-         headers: {
+      // 素材列表
+      images: [],
+      // 总条数
+      total: 0,
+      // 选中的图片地址
+      selectedImageUrl: null,
+      // 上传的请求头
+      headers: {
         Authorization: `Bearer ${auth.getUser().token}`
       },
       // 上传的图片地址
       uploadImageUrl: null,
-      //  coverImageUrl: '../assets/default.png',这样不会显示，所以要导入import
-       coverImageUrl: defaultImg,
+      // 封面地址
+      coverImageUrl: defaultImg
     }
   },
   methods: {
-    // 确认产生数据，提交不是给coverImageUrl，而是给父组件
-   confirmImage () {
+    // 确认图片
+    confirmImage () {
       // 知道现在激活的tab选项卡是谁
       if (this.activeName === 'image') {
         // 素材库
@@ -125,37 +122,45 @@ export default {
       // 关闭对话框
       this.dialogVisible = false
     },
-    // 上传成功
-    uploadSuccess(res){
-        this.uploadImageUrl=res.data.url
-        this.$message.success('上传图片成功')
+    // 上传图片
+    uploadSuccess (res) {
+      // 预览 + 提示
+      this.uploadImageUrl = res.data.url
+      this.$message.success('上传图片成功')
     },
-    //选中图片,拿到唯一标识url，就记住这张图片了并存到data中的selectedImageUrl
-     selectedImage (url) {
+    // 选中图片
+    selectedImage (url) {
       this.selectedImageUrl = url
     },
+    // 打开对话框
     openDialog () {
       // 重置数据
       this.selectedImageUrl = null
       this.uploadImageUrl = null
       this.activeName = 'image'
+
       this.dialogVisible = true
+      // 只有用户打开了对话框，才有选择素材的需求，再去加载数据才是合理的。
+      // 而且每次打开对话框，都可以拿到最新的素材数据。
       this.getImages()
     },
-    changeCollect(){
-       this.reqParams.page = 1
+    // 全部 收藏
+    changeCollect () {
+      this.reqParams.page = 1
       this.getImages()
     },
+    // 分页函数
     changePager (newPage) {
       this.reqParams.page = newPage
       this.getImages()
     },
-     async getImages () {
+    // 获取素材列表
+    async getImages () {
       const { data: { data } } = await this.$http.get('user/images', { params: this.reqParams })
       this.images = data.results
       this.total = data.total_count
+    }
   }
-}
 }
 </script>
 
