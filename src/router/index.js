@@ -1,16 +1,17 @@
 import VueRouter from 'vue-router'
 import Vue from 'vue'
-import login from '../views/Login.vue'
-import home from '../views/Home.vue'
-import welcome from '../views/welcom.vue'
-import artical from '../views/Artical.vue'
-import notfund from '../views/404.vue'
-import Image from '../views/Image.vue'
-import publish from '../views/Publish.vue'
-import Comment from '../views/Comment.vue'
-import fans from '../views/Fans.vue'
-import setting from '../views/Setting.vue'
-import auth from '@/utils/auth'
+
+const  login=()=>import  ('../views/Login.vue')   
+const  home=()=>import   ( '../views/Home.vue')   
+const  welcome=()=>import(  '../views/welcom.vue')  
+const  artical=()=>import(  '../views/Artical.vue')
+const  notfund=()=>import(  '../views/404.vue')   
+const  Image=()=>import  ('../views/Image.vue')   
+const  publish=()=>import(  '../views/Publish.vue')
+const  Comment=()=>import(  '../views/Comment.vue')
+const  fans=()=>import   ( '../views/Fans.vue')   
+const  setting=()=>import(  '../views/Setting.vue')
+import  auth from '@/utils/auth'  
 Vue.use(VueRouter)
 const routes=[{path:'/login',component:login},
 {path:'/',component:home,
